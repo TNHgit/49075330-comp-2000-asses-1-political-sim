@@ -6,16 +6,16 @@ public class Grid extends JPanel{
     private TreeMap<Integer,Land> gameMap;
     private int gridSize;
     private ArrayList<Empire> factions;
-    public  Grid(int width,int height, int gridSize){
+    public  Grid(int width,int height, int gridSize,int factCount){
         gameMap = new TreeMap<Integer,Land>();
         this.gridSize = gridSize;
         setSize(width,height);
         setLayout(null);
         //System.out.println("grid tile Width: " + tileSizeWidth + " Height: " + tileSizeHeight);
-        createGrid();
+        createGrid(factCount);
 
     }
-    public void createGrid(){
+    public void createGrid(int factCount){
         int tileSizeHeight,tileSizeWidth, tileID;
         tileSizeWidth=getWidth()/gridSize;
         tileSizeHeight=getHeight()/gridSize;
@@ -57,28 +57,50 @@ public class Grid extends JPanel{
                 tileID++;
             }
         }
+
         factions = new ArrayList<>();
-        Empire test=new Empire(Color.RED, 1);
         Land startLand = getTile((int)Math.floor(Math.random()*gridSize*gridSize)+1);
-        test.addTile(startLand);
-        test.updateTiles();
-        factions.add(test);
-        Empire test2=new Empire(Color.GREEN, 2);
-        while (startLand.getOwner() != null)
+        for (int i = 0; i < factCount; i++)
         {
-            startLand = getTile((int)Math.floor(Math.random()*gridSize*gridSize)+1);
+            int redVal = 100+(155/((int)Math.ceil(Math.cbrt(factCount)-1)))*(i%(int)Math.ceil(Math.cbrt(factCount)));
+            int greenVal = 100+(155/((int)Math.ceil(Math.cbrt(factCount)-1)))*((int)(Math.floor(i/(int)Math.ceil(Math.cbrt(factCount))))%(int)Math.ceil(Math.cbrt(factCount)));
+            int blueVal = 100+(155/((int)Math.ceil(Math.cbrt(factCount)-1)))*((int)(Math.floor(i/((int)Math.ceil(Math.cbrt(factCount))*(int)Math.ceil(Math.cbrt(factCount)))))%(int)Math.ceil(Math.cbrt(factCount)));
+            Color factCol = new Color(redVal, greenVal, blueVal);
+
+            //RANDOMISED COLOURS (CAN LOOP FOREVER WITH TOO MANY FACTIONS)
+            /* 
+            Color factCol = new Color((int)(25*Math.random()*10), (int)(25*Math.random()*10), (int)(25*Math.random()*10));
+            Boolean newCol = false;
+            while (newCol == false)
+            {
+                if (factCol.getBlue() < 40 && factCol.getRed() < 40 && factCol.getGreen() < 40)
+                {
+                    factCol = new Color((int)(25*Math.random()*10), (int)(25*Math.random()*10), (int)(25*Math.random()*10));
+                    continue;
+                }
+
+                newCol = true;
+                for (int j = 0; j < factions.size(); j++)
+                {
+                    if (Math.abs(factions.get(j).getColor().getRed()-factCol.getRed()) < 60 && Math.abs(factions.get(j).getColor().getGreen()-factCol.getGreen()) < 60 && Math.abs(factions.get(j).getColor().getBlue()-factCol.getBlue()) < 60)
+                    {
+                        factCol = new Color((int)(25*Math.random()*10), (int)(25*Math.random()*10), (int)(25*Math.random()*10));
+                        newCol = false;
+                        break;
+                    }
+                }
+            }
+            */
+
+            Empire faction = new Empire(factCol, i+1);
+            while (startLand.getOwner() != null || startLand instanceof Impassable)
+            {
+                startLand = getTile((int)Math.floor(Math.random()*gridSize*gridSize)+1);
+            }
+            faction.addTile(startLand);
+            faction.updateTiles();
+            factions.add(faction);
         }
-        test2.addTile(startLand);
-        test2.updateTiles();
-        factions.add(test2);
-        Empire test3=new Empire(Color.BLUE, 3);
-        while (startLand.getOwner() != null)
-        {
-            startLand = getTile((int)Math.floor(Math.random()*gridSize*gridSize)+1);
-        }
-        test3.addTile(startLand);
-        test3.updateTiles();
-        factions.add(test3);
     }
 
     public void updateTurn(){
@@ -127,6 +149,7 @@ public class Grid extends JPanel{
                 }
             }
 
+            System.out.println("Faction " + faction.getID() + " Colour: " + faction.getColor().toString());
             System.out.println("Faction " + faction.getID() + " Troops: " + faction.getTroops());
             System.out.println("Faction " + faction.getID() + " Total Tiles: " + faction.getTileCount());
             System.out.println("Faction " + faction.getID() + " Improvable Tiles: " + faction.getImprovableCount());
@@ -185,6 +208,4 @@ public class Grid extends JPanel{
         //System.out.println("\ntile taken\n");
         faction.addTile(tileToclaim);
     }
-
-    
 }
