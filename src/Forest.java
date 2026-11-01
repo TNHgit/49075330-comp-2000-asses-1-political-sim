@@ -49,9 +49,10 @@ public class Forest extends Land implements Improvable{
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.setColor(Color.GREEN);
+        g.setColor(new Color(100,65,23)); 
         g.fillRect(firstRect[0], firstRect[1], rectX, rectY);
         g.fillRect(secondRect[0], secondRect[1], rectX, rectY);
+        g.setColor(new Color(31,80,44));
         g.fillPolygon(xPoints, yPoints, xPoints.length);
     }
 }
