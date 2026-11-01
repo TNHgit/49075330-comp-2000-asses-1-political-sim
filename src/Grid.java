@@ -206,6 +206,4 @@ public class Grid extends JPanel{
         //System.out.println("\ntile taken\n");
         faction.addTile(tileToclaim);
     }
-
-    
 }
