@@ -3,14 +3,14 @@ import java.util.*;
 import javax.lang.model.util.ElementScanner14;
 import javax.swing.*;
 public class Grid extends JPanel{
-    TreeMap<Integer,Land> gameMap;
-    int gridSize;
-    ArrayList<Empire> factions;
-    public <E extends Land> Grid(int width,int height, int gridSize, int factCount){
+    private TreeMap<Integer,Land> gameMap;
+    private int gridSize;
+    private ArrayList<Empire> factions;
+    public  Grid(int width,int height, int gridSize,int factCount){
         gameMap = new TreeMap<Integer,Land>();
         this.gridSize = gridSize;
         setSize(width,height);
-        setLayout(null);;
+        setLayout(null);
         //System.out.println("grid tile Width: " + tileSizeWidth + " Height: " + tileSizeHeight);
         createGrid(factCount);
 
@@ -37,7 +37,7 @@ public class Grid extends JPanel{
                     placeHolder=new Plains();
                     placeHolder.setBackground(Color.black);
                 }
-                placeHolder.ID=tileID;
+                placeHolder.setID(tileID);
                 
                 placeHolder.setSize(tileSizeWidth-1, tileSizeHeight-1);
                 placeHolder.setLocation(x*tileSizeWidth , y*tileSizeHeight);

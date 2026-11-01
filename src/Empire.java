@@ -1,12 +1,12 @@
 import java.awt.*;
 import java.util.*;
 public class Empire {
-    ArrayList<Land> ownedLand;
-    ArrayList<Land> improvables;
-    ArrayList<Empire> allies;
-    Color nationColor;
-    int troops;
-    int ID;
+    private ArrayList<Land> ownedLand;
+    private ArrayList<Land> improvables;
+    private ArrayList<Empire> allies;
+    private Color nationColor;
+    private int troops;
+    private int ID;
 
     public Empire(){
         ownedLand= new ArrayList<>();

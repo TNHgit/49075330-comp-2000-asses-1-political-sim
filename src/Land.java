@@ -1,8 +1,8 @@
 import java.util.ArrayList;
 import javax.swing.*;
 abstract class  Land  extends JPanel  {
-    int ID;
-    Land left,right,above,below;
+    private int ID;
+    private Land left,right,above,below;
     private Empire owner;
 
     public Land(){
@@ -40,6 +40,9 @@ abstract class  Land  extends JPanel  {
 
     public int getID(){
         return ID; 
+    }
+    public void setID(int num){
+        ID=num;
     }
 
     public ArrayList<Land> getAdjTiles(){
