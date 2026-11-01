@@ -63,4 +63,9 @@ abstract class  Land  extends JPanel  {
     {
         this.owner = owner;
     }
+
+    public void drawLand(int width, int height)
+    {
+        //does nothing on its own
+    }
 }

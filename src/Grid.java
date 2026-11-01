@@ -27,10 +27,12 @@ public class Grid extends JPanel{
                 if (terrainType <= 0.2){
                     placeHolder=new Forest();
                     placeHolder.setBackground(Color.black);
+                    placeHolder.drawLand(tileSizeWidth, tileSizeHeight);
                 }
                 else if (terrainType >= 0.9){
                     placeHolder=new Mountain();
                     placeHolder.setBackground(Color.gray);
+                    placeHolder.drawLand(tileSizeWidth, tileSizeHeight);
                 }
                 else
                 {
