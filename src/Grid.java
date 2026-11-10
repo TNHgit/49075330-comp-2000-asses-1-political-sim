@@ -110,6 +110,7 @@ public class Grid extends JPanel{
         }
 
         ArrayList<Integer> skipTurns = new ArrayList<>();
+
         for(int i = 0; i < factions.size(); i++)
         {
             Empire faction = factions.get(i);

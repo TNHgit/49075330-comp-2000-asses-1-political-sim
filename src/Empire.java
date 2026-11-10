@@ -1,5 +1,6 @@
 import java.awt.*;
 import java.util.*;
+import java.util.stream.Collectors;
 public class Empire {
     private ArrayList<Land> ownedLand;
     private ArrayList<Land> improvables;
@@ -43,7 +44,16 @@ public class Empire {
     }
     public ArrayList<Land> getPlayableBorderTiles(){
         ArrayList<Land> list= new ArrayList<>();
-        if (ownedLand==null){
+        list = new ArrayList(ownedLand.parallelStream()
+                                      .filter(tile ->  tile.getAdjTiles()
+                                                           .stream()
+                                                           .filter(subTile -> !isOwner(subTile)&&isClaimable(subTile))
+                                                           .findAny()
+                                                           .isPresent())
+                                      .distinct()
+                                      .collect(Collectors.toList()));
+
+        /*if (ownedLand==null){
             return null;
         }
         for(Land l:ownedLand){
@@ -53,7 +63,7 @@ public class Empire {
                     break;
                 }
             }
-        }
+        }*/
         return list;
     }
     public void addTile(Land tile){
