@@ -26,7 +26,7 @@ public class Grid extends JPanel{
         for(int y = 0;y<gridSize;y++){
             for(int x = 0;x<gridSize;x++){
                 double terrainType = Math.random();
-                if (terrainType <= 0.2){
+                if (terrainType <= 0.05){
                     placeHolder=new Forest();
                     placeHolder.setBackground(Color.black);
                     placeHolder.drawLand(tileSizeWidth, tileSizeHeight);
