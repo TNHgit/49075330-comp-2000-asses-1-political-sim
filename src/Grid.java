@@ -2,6 +2,8 @@ import java.awt.*;
 import java.util.*;
 import javax.lang.model.util.ElementScanner14;
 import javax.swing.*;
+import java.util.concurrent.*;
+
 public class Grid extends JPanel{
     private TreeMap<Integer,Land> gameMap;
     private int gridSize;
@@ -128,11 +130,8 @@ public class Grid extends JPanel{
                 }
                 if (Math.random() > 0.5)
                 {
-                    for(int j = 0; j < faction.getTroops(); j++)
-                    {
-                        claimRandomTile(faction);
-                        faction.updateTiles();
-                    }
+                    claimRandomTile(faction, faction.getTroops());
+                    faction.updateTiles();
                 }
                 else
                 {
@@ -180,13 +179,27 @@ public class Grid extends JPanel{
     public void update(){
 
     }
-    public void claimRandomTile(Empire faction){
+    public void claimRandomTile(Empire faction, int claims){
         ArrayList<Land> list = faction.getPlayableBorderTiles();
-        if (list.isEmpty())
+        if (list == null || list.isEmpty())
         {
             return;
         }
-        Land borderTile, tileToclaim;
+
+        ForkJoinPool pool = new ForkJoinPool();
+        ArrayList<Land> tilesToClaim = pool.invoke(new CompileClaims(faction, claims, list));
+        pool.close();
+
+        for (Land tile : tilesToClaim)
+        {
+            if (!faction.isOwner(tile))
+            {
+                faction.addTile(tile);
+            }
+        }
+        
+
+        /*Land borderTile, tileToclaim;
         //int num2 =0;
         borderTile=list.get((int)(Math.random()*list.size()));
         list=borderTile.getAdjTiles();
@@ -207,6 +220,6 @@ public class Grid extends JPanel{
             // num2++;
         }
         //System.out.println("\ntile taken\n");
-        faction.addTile(tileToclaim);
+        faction.addTile(tileToclaim);*/
     }
 }
