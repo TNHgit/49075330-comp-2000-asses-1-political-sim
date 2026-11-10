@@ -186,9 +186,7 @@ public class Grid extends JPanel{
             return;
         }
 
-        ForkJoinPool pool = new ForkJoinPool();
-        ArrayList<Land> tilesToClaim = pool.invoke(new CompileClaims(faction, claims, list));
-        pool.close();
+        ArrayList<Land> tilesToClaim = ForkJoinPool.commonPool().invoke(new CompileClaims(faction, claims, list));
 
         for (Land tile : tilesToClaim)
         {

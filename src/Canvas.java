@@ -12,25 +12,25 @@ public class Canvas extends JFrame{
     Color white = new Color(207,207,207);
     Color darkGrey = new Color(110,110,110);
     public Canvas(){
-        setSize(613,800);
+        setSize(2000,2200); //change this if too big for screen
         setTitle("politicalSim");
         setLayout(null);
         setResizable(false);
         setBackground(white);
-        gameGrid= new Grid(600,600,50,7);
+        gameGrid= new Grid(2000,2000,250,50); //and change the first two values of this if too big for screen
         gameGrid.setLocation(0,0);
         gameGrid.setBackground(darkGrey);
         add(gameGrid);
         turnButton = new JButton("Next Turn");
         turnButton.setSize(250,100);
         turnButton.setVisible(true);
-        turnButton.setLocation(325,650);
+        turnButton.setLocation(325,2000); //and change the second values of this if too big for screen
         turnButton.addActionListener(l -> nextTurnPressed(gameGrid));
         add(turnButton);
         autoButton = new JButton("Auto Turns");
         autoButton.setSize(250,100);
         autoButton.setVisible(true);
-        autoButton.setLocation(25,650);
+        autoButton.setLocation(25,2000); //and change the second values of this if too big for screen
         autoButton.addActionListener(l -> toggleAutoTurns(gameGrid));
         add(autoButton);
         setUpWindowCloser();

@@ -21,21 +21,22 @@ class CompileClaims extends RecursiveTask<ArrayList<Land>> {
 
         if (claims == 1)
         {
-            Land borderTile;
+            Land borderTile, tileToclaim;
             borderTile=list.get((int)(Math.random()*list.size()));
+            list=borderTile.getAdjTiles();
+            int num=(int)(Math.random()*list.size());
+            tileToclaim=list.get(num);
 
-            ArrayList<Land> expandableTiles = new ArrayList<>();
-            for (Land x : borderTile.getAdjTiles()) {
-                if (!faction.isOwner(x) && faction.isClaimable(x)) {
-                    expandableTiles.add(x);
-                }
+            while(faction.isOwner(tileToclaim)||!faction.isClaimable(tileToclaim)){
+
+                num=(int)(Math.random()*list.size());
+                tileToclaim=list.get(num);
             }
 
-            ArrayList<Land> tileToClaim = new ArrayList<>();
-            if (!expandableTiles.isEmpty()) {
-                tileToClaim.add(expandableTiles.get((int) (Math.random() * expandableTiles.size())));
-            }
-            return tileToClaim;
+            ArrayList<Land> tile = new ArrayList<>();
+            tile.add(tileToclaim);
+
+            return tile;
         }
 
         CompileClaims left = new CompileClaims(faction, claims/2, list);
