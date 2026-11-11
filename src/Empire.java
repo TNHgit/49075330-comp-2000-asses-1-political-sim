@@ -43,15 +43,18 @@ public class Empire {
         return list;
     }
     public ArrayList<Land> getPlayableBorderTiles(){
-        ArrayList<Land> list= new ArrayList<>();
-        list = new ArrayList(ownedLand.parallelStream()
-                                      .filter(tile ->  tile.getAdjTiles()
-                                                           .stream()
-                                                           .filter(subTile -> !isOwner(subTile)&&isClaimable(subTile))
-                                                           .findAny()
-                                                           .isPresent())
-                                      .distinct()
-                                      .collect(Collectors.toList()));
+        if (ownedLand==null){
+            return null;
+        }
+        ArrayList<Land> list;
+        list = ownedLand.parallelStream()
+                        .filter(tile ->  tile.getAdjTiles()
+                                             .stream()
+                                             .filter(subTile -> !isOwner(subTile)&&isClaimable(subTile))
+                                             .findAny()
+                                             .isPresent())
+                        .distinct()
+                        .collect(ArrayListLandCollector.toArrayListLand());
 
         /*if (ownedLand==null){
             return null;

@@ -38,8 +38,6 @@ class CompileClaims extends RecursiveTask<ArrayList<Land>> {
                 }
 
                 tile.add(tileToclaim);
-
-                
             }
             
             return tile;

@@ -21,6 +21,7 @@ public class Canvas extends JFrame{
         gameGrid.setLocation(0,0);
         gameGrid.setBackground(darkGrey);
         add(gameGrid);
+        DisplayFactionData factionData = new DisplayFactionData(gameGrid);
         turnButton = new JButton("Next Turn");
         turnButton.setSize(250,100);
         turnButton.setVisible(true);

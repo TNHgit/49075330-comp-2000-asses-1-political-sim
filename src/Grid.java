@@ -1,13 +1,20 @@
 import java.awt.*;
 import java.util.*;
-import javax.lang.model.util.ElementScanner14;
-import javax.swing.*;
 import java.util.concurrent.*;
+import javax.swing.*;
 
-public class Grid extends JPanel{
+public class Grid extends JPanel implements Subject{
     private TreeMap<Integer,Land> gameMap;
     private int gridSize;
     private ArrayList<Empire> factions;
+    private ArrayList<Observer> observers;
+    private int factID;
+    private Color factColor;
+    private int factTroops;
+    private int factTileCount; 
+    private int factImprovableCount; 
+    private ArrayList<Integer> factAllyIDs;
+
     public  Grid(int width,int height, int gridSize,int factCount){
         gameMap = new TreeMap<Integer,Land>();
         this.gridSize = gridSize;
@@ -15,8 +22,27 @@ public class Grid extends JPanel{
         setLayout(null);
         //System.out.println("grid tile Width: " + tileSizeWidth + " Height: " + tileSizeHeight);
         createGrid(factCount);
-
+        observers = new ArrayList<Observer>();
     }
+
+    public void registerObserver(Observer o)
+    {
+        observers.add(o);
+    }
+
+    public void removeObserver(Observer o)
+    {
+        observers.remove(o);
+    }
+
+    public void notifyObservers()
+    {
+        for (Observer observer : observers)
+        {
+            observer.update(factID, factColor, factTroops, factTileCount, factImprovableCount, factAllyIDs);
+        }
+    }
+
     public void createGrid(int factCount){
         int tileSizeHeight,tileSizeWidth, tileID;
         tileSizeWidth=getWidth()/gridSize;
@@ -124,6 +150,10 @@ public class Grid extends JPanel{
                 }
                 catch (IndexOutOfBoundsException e)
                 {
+                    for (Empire ally : faction.getAllies())
+                    {
+                        ally.ally(faction);
+                    }
                     factions.remove(faction);
                     i--;
                     continue;
@@ -149,18 +179,21 @@ public class Grid extends JPanel{
                 }
             }
 
-            System.out.println("Faction " + faction.getID() + " Colour: " + faction.getColor().toString());
-            System.out.println("Faction " + faction.getID() + " Troops: " + faction.getTroops());
-            System.out.println("Faction " + faction.getID() + " Total Tiles: " + faction.getTileCount());
-            System.out.println("Faction " + faction.getID() + " Improvable Tiles: " + faction.getImprovableCount());
-            for (int j = 0; j < faction.getAllies().size(); j++)
+            factID = faction.getID();
+            factColor = faction.getColor();
+            factTroops = faction.getTroops();
+            factTileCount = faction.getTileCount();
+            factImprovableCount = faction.getImprovableCount();
+            factAllyIDs = new ArrayList<Integer>();
+            for (Empire ally : faction.getAllies())
             {
-                if (factions.contains(faction.getAllies().get(j)))
+                if (factions.contains(ally) || true)
                 {
-                    System.out.println("Faction " + faction.getID() + " Allied With " + faction.getAllies().get(j).getID());
+                    factAllyIDs.add(ally.getID());
                 }
             }
-            System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+
+            notifyObservers();
         }
     }
 
