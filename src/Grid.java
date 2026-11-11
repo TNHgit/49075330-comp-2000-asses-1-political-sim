@@ -132,11 +132,6 @@ public class Grid extends JPanel implements Subject{
     }
 
     public void updateTurn(){
-        for (int i = 0; i < 20; i++)
-        {
-            System.out.println();
-        }
-
         ArrayList<Integer> skipTurns = new ArrayList<>();
 
         for(int i = 0; i < factions.size(); i++)
