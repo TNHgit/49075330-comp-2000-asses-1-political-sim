@@ -19,23 +19,29 @@ class CompileClaims extends RecursiveTask<ArrayList<Land>> {
             return new ArrayList<>();
         }
 
-        if (claims == 1)
+        if (claims <= 25)
         {
-            Land borderTile, tileToclaim;
-            borderTile=list.get((int)(Math.random()*list.size()));
-            list=borderTile.getAdjTiles();
-            int num=(int)(Math.random()*list.size());
-            tileToclaim=list.get(num);
-
-            while(faction.isOwner(tileToclaim)||!faction.isClaimable(tileToclaim)){
-
-                num=(int)(Math.random()*list.size());
-                tileToclaim=list.get(num);
-            }
-
             ArrayList<Land> tile = new ArrayList<>();
-            tile.add(tileToclaim);
 
+            for (int i = 0; i < claims; i++)
+            {
+                Land borderTile, tileToclaim;
+                borderTile=list.get((int)(Math.random()*list.size()));
+                ArrayList<Land> listAdj=borderTile.getAdjTiles();
+                int num=(int)(Math.random()*listAdj.size());
+                tileToclaim=listAdj.get(num);
+
+                while(faction.isOwner(tileToclaim)||!faction.isClaimable(tileToclaim)){
+
+                    num=(int)(Math.random()*listAdj.size());
+                    tileToclaim=listAdj.get(num);
+                }
+
+                tile.add(tileToclaim);
+
+                
+            }
+            
             return tile;
         }
 
